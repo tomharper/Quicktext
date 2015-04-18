@@ -1,4 +1,4 @@
-Swipe Keyboards for iOS
+Swipe Style Keyboards for iOS
 =========
 
 A quick hack to do a keyboard that behaves like the swype keyboard- needs a bit more work to get it into something that is worth working on further
@@ -6,28 +6,13 @@ A quick hack to do a keyboard that behaves like the swype keyboard- needs a bit 
 #### New iOS keyboard ####
 Swipe keyboard proto
 
-###  This project uses code from
-Kulpreet Chilana
-Apple, Inc.
+###  This project uses code from:
+Kulpreet Chilana- borrowed the keyboards
+Apple, Inc. - borrowed some of the opengl code
 
-### Usage
-Add the `iPad` and/or `iPhone:iPod` directory to your target in Xcode. `PKCustomKeyboard.h` contains all of the customizable constants for the iPad keyboard. `PMCustomKeyboard.h` contains all of the customizable constants for the iPhone/iPod touch keyboard. Characters in the `kChar` array can start or end with ◌ (U+25CC) and the ◌ will not appear when inputted into the textView. This is particularly useful for diacritical characters.
+### Current Status
+1. this project uses the predicted frequencies of the conjoined letters rather than a dictionary
+2. the letter collection algorithm needs to be more adaptive to the speed of the user
+3. the letter identification should be more fuzzy than current
+4. need to hook up the ipad keyboard
 
-Make sure to import `PKCustomKeyboard.h` and `PMCustomKeyboard.h` into your view controller's header file.
-
-Insert the following into the `viewDidLoad` of your view controller or wherever else you see fit. You can `setTextView` to any `UITextView` or `UITextField` that you want the keyboard to appear for.
-
-```objective-c
-
-if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone )
-    {
-        PMCustomKeyboard *customKeyboard = [[PMCustomKeyboard alloc] init];
-        [customKeyboard setTextView:self.textView];
-        
-    }
-    else {
-        PKCustomKeyboard *customKeyboard = [[PKCustomKeyboard alloc] init];
-        [customKeyboard setTextView:self.textView];
-    }
-
-```
