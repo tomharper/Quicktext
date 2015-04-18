@@ -40,7 +40,7 @@
 	// This is the same as the AppDelegate
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.backgroundColor = [UIColor whiteColor];
-	self.window.opaque = YES;
+	self.window.opaque = NO;
 	[self.window makeKeyAndVisible];
 	// Override point for customization after application launch.
 	PaintingViewController *controller = [[PaintingViewController alloc] init];

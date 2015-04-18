@@ -7,7 +7,7 @@
 //
 
 #import "PMCustomKeyboard.h"
-#include <vector>
+#include <string>
 using namespace std;
 
 enum {
@@ -25,6 +25,20 @@ enum {
 
 @implementation PMCustomKeyboard
 @synthesize textView = _textView;
+PaintingView *pView;
+
+- (id)initWithCoder:(NSCoder*)coder {
+    
+    pView = [[PaintingView alloc] initWithCoder:coder];
+    if ((self = [super initWithCoder:coder])) {
+    }
+    [self addSubview:pView];
+    return self;
+}
++ (Class)layerClass
+{
+    return [CAEAGLLayer class];
+}
 
 - (id)init {
 	
@@ -218,7 +232,7 @@ enum {
 	
 	CGPoint location = [[touches anyObject] locationInView:self];
 	
-	((PaintingView*)self).nKeyLast = -1;
+	pView.nKeyLast = -1;
 	for (UIButton *b in self.characterKeys) {
 		if ([b subviews].count > 1) {
 			[[[b subviews] objectAtIndex:1] removeFromSuperview];
@@ -227,7 +241,7 @@ enum {
 		{
 			//[self characterPressed:b];
 			[self addPopupToButton:b];
-			((PaintingView*)self).nKeyLast = [b.titleLabel.text characterAtIndex:0];
+            pView.nKeyLast = [b.titleLabel.text characterAtIndex:0];
 
 		}
 	}
@@ -237,14 +251,14 @@ enum {
 -(void)touchesMoved: (NSSet *)touches withEvent: (UIEvent *)event {
 	CGPoint location = [[touches anyObject] locationInView:self];
 	
-	((PaintingView*)self).nKeyLast = -1;
+    pView.nKeyLast = -1;
 	for (UIButton *b in self.characterKeys) {
 		if ([b subviews].count > 1) {
 			[[[b subviews] objectAtIndex:1] removeFromSuperview];
 		}
 		if(CGRectContainsPoint(b.frame, location))
 		{
-			((PaintingView*)self).nKeyLast = [b.titleLabel.text characterAtIndex:0];
+            pView.nKeyLast = [b.titleLabel.text characterAtIndex:0];
 			[self addPopupToButton:b];
 			//[self characterPressed:b];
 		}
@@ -257,31 +271,25 @@ enum {
 -(void) touchesEnded: (NSSet *)touches withEvent: (UIEvent *)event{
 	CGPoint location = [[touches anyObject] locationInView:self];
 	
-	((PaintingView*)self).nKeyLast = -1;
+	//((PaintingView*)self).nKeyLast = -1;
 	for (UIButton *b in self.characterKeys) {
 		if ([b subviews].count > 1) {
 			[[[b subviews] objectAtIndex:1] removeFromSuperview];
 		}
 		if(CGRectContainsPoint(b.frame, location))
 		{
-			((PaintingView*)self).nKeyLast = [b.titleLabel.text characterAtIndex:0];
+            pView.nKeyLast = [b.titleLabel.text characterAtIndex:0];
 			//[self characterPressed:b];
 		}
 	}
 	[super touchesEnded:touches withEvent:event];
 	
-	std::vector<SwipePoint> arrText;
-	[super analyzeText:&arrText];
+    NSString *temp = [pView getSwypedWord];
 
-	if (arrText.size()) {
-		for (int i=0; i<arrText.size(); i++)
-		{
-			NSString *character =  [NSString stringWithFormat:@"%c", arrText[i].key];
-			
-			[self.textView insertText:character];
-		}
-		[self.textView insertText:@" "];
-	}
+    [self.textView insertText:temp];
+    [self.textView insertText:@" "];
+
+
 }
 
 /* UI Utilities */

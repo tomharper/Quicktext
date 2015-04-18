@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "PaintingView.h"
 
-@interface PKCustomKeyboard : PaintingView
+@interface PKCustomKeyboard : UIView
 
 @property (strong, nonatomic) IBOutlet UIImageView *keyboardBackground;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *characterKeys;

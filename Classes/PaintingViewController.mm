@@ -48,7 +48,7 @@
 		PMCustomKeyboard *customKeyboard = [[PMCustomKeyboard alloc] init];
 		customKeyboard.layer.zPosition = 1;
 		[customKeyboard setTextView:textView];
-		customKeyboard.alpha = 0.5f;
+        customKeyboard.alpha = 1.0f;
 		
 		// comment me out...?
 		[self.view addSubview:customKeyboard];
@@ -58,7 +58,7 @@
 		PKCustomKeyboard *customKeyboard = [[PKCustomKeyboard alloc] init];
 		customKeyboard.layer.zPosition = 1;
 		[customKeyboard setTextView:textView];
-		customKeyboard.alpha = 0.5f;
+		customKeyboard.alpha = 1.0f;
 
 		// comment me out
 		[self.view addSubview:customKeyboard];

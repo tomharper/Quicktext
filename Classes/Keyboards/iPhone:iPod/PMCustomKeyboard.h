@@ -13,7 +13,7 @@
 
 // MAYBE SUBCLASS?
 
-@interface PMCustomKeyboard : PaintingView
+@interface PMCustomKeyboard : UIView
 
 @property (strong, nonatomic) IBOutlet UIImageView *keyboardBackground;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *characterKeys;
@@ -23,6 +23,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *deleteButton;
 @property (strong) id<UITextInput> textView;
 @property (strong, nonatomic) IBOutlet UIButton *spaceButton;
+
 
 - (IBAction)returnPressed:(id)sender;
 - (IBAction)characterPressed:(id)sender;

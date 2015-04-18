@@ -430,6 +430,9 @@ typedef struct {
 	// Display the buffer
 	glBindRenderbuffer(GL_RENDERBUFFER, viewRenderbuffer);
 	[context presentRenderbuffer:GL_RENDERBUFFER];
+    
+    // clear here?
+    arrSwipePoints.clear();
 }
 
 // Drawings a line onscreen based on where the user touches
@@ -494,16 +497,18 @@ typedef struct {
 	}
 }
 
-- (void)analyzeText:(std::vector<SwipePoint>&) arrText
+-(NSString*)getSwypedWord
 {
+    std::vector<SwipePoint> arrText;
+    
 	if (arrSwipePoints.size()==0)
-		return;
+		return nullptr;
 	
 	if (arrSwipePoints.size() == 1) {
 		if (arrSwipePoints[0].key>=0)
 			arrText.push_back(arrSwipePoints[0]);
-		arrSwipePoints.clear();
-		return;
+
+		return nullptr;
 	}
 	
 TLogDebug("CAPTURE LETTERS");
@@ -630,10 +635,22 @@ TLogDebug("--NEW WORD--")
 TLogDebug("c:%c #:%d ms:%d >:%d vel:%f dist:%f", static_cast<char>(pt.key), pt.nCnt, pt.nMs, pt.nAngle, pt.fVelocity, pt.fDist);
 		arrText.push_back(pt);
 	}
+    
+    NSMutableString *outstring = [[NSMutableString alloc] init];
+    
+    if (arrText.size()) {
+        for (int i=0; i<arrText.size(); i++)
+        {
+            NSString * temp = [NSString stringWithFormat:@"%c", arrText[i].key];
+            [outstring appendString: temp];
+        }
+    }
 	
 	// TODO: lambda analyze FINAL
 	// for now we instead just clear the history
-	arrSwipePoints.clear();
+	//arrSwipePoints.clear();
+    
+    return outstring;
 }
 
 
@@ -669,7 +686,10 @@ TLogDebug("c:%c #:%d ms:%d >:%d vel:%f dist:%f", static_cast<char>(pt.key), pt.n
 // the openGL coordinate system is apparently more 
 // Handles the continuation of a touch.
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
-{   
+{
+    [self.superview touchesMoved:touches withEvent:event];
+
+    [super touchesMoved:touches withEvent:event];
 	CGRect				bounds = [self bounds];
 	CGPoint prevLoc = [[touches anyObject] previousLocationInView:self];
 	CGPoint curLoc = [[touches anyObject] locationInView:self];
@@ -708,6 +728,8 @@ TLogDebug("c:%c #:%d ms:%d >:%d vel:%f dist:%f", static_cast<char>(pt.key), pt.n
 // Handles the end of a touch event when the touch is a tap.
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.superview touchesEnded:touches withEvent:event];
+    
 	CGRect				bounds = [self bounds];
 	CGPoint prevLoc = [[touches anyObject] previousLocationInView:self];
 	CGPoint curLoc = [[touches anyObject] locationInView:self];
@@ -738,7 +760,7 @@ TLogDebug("c:%c #:%d ms:%d >:%d vel:%f dist:%f", static_cast<char>(pt.key), pt.n
 	[self renderLineFromPoint:sLocPrev.pPoint toPoint:sLoc.pPoint];
 	
 	// REMOVE ME- this is for debugging
-	[self playback];
+	//[self playback];
 	
 	[self eraseMe];
 	
@@ -749,6 +771,7 @@ TLogDebug("c:%c #:%d ms:%d >:%d vel:%f dist:%f", static_cast<char>(pt.key), pt.n
 // Handles the end of a touch event.
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    [self.superview touchesCancelled:touches withEvent:event];
 	// If appropriate, add code necessary to save the state of the application.
 	// This application is not saving state.
 	

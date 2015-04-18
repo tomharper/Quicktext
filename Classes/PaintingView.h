@@ -14,6 +14,8 @@
 #import <OpenGLES/ES2/glext.h>
 #import "TDateTime.h"
 #include "Math.h"
+#include <vector>
+
 
 #define kFont [UIFont fontWithName:@"Courier-Bold" size:20]
 #define kAltLabel @"123"
@@ -94,9 +96,10 @@ public:
 @property(nonatomic, readwrite) NSInteger nIndexLast;
 @property(nonatomic, readwrite) NSInteger nKeyLast;
 
-- (void)eraseMe;
+
 - (void)setBrushColor:(CGFloat)red green:(CGFloat)green blue:(CGFloat)blue;
 - (void)setBrushColorWithIndex:(NSInteger)nIndex;
+- (NSString*)getSwypedWord;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;
