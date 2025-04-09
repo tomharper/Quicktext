@@ -1,4 +1,4 @@
-Swipe Style Keyboards for iOS
+Swipe Keyboard for iOS
 =========
 
 A quick hack to do a keyboard that behaves like the swype keyboard- needs a bit more work to get it into something that is worth working on further
